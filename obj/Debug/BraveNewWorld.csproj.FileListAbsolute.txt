@@ -1,0 +1,8 @@
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\bin\Debug\BraveNewWorld.exe.config
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\bin\Debug\BraveNewWorld.exe
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\bin\Debug\BraveNewWorld.pdb
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\obj\Debug\BraveNewWorld.csproj.AssemblyReference.cache
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\obj\Debug\BraveNewWorld.csproj.SuggestedBindingRedirects.cache
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\obj\Debug\BraveNewWorld.csproj.CoreCompileInputs.cache
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\obj\Debug\BraveNewWorld.exe
+D:\CSharp\IUNIOR\DZ\BraveNewWorld\obj\Debug\BraveNewWorld.pdb
