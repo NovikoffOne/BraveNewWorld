@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mime;
 
 namespace BraveNewWorld
 {
@@ -40,7 +39,7 @@ namespace BraveNewWorld
                 {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
                 {barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon,
                     barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon },
-                            };
+            };
 
             Console.CursorVisible = false;
 
@@ -51,49 +50,55 @@ namespace BraveNewWorld
 
                 ConsoleKeyInfo charKey = Console.ReadKey();
 
-                switch (charKey.Key)
+                if (charKey.Key == ConsoleKey.Spacebar)
                 {
-                    case ConsoleKey.UpArrow:
-                        playerDirectionX = 0;
-                        playerDirectionY = -playerSpeed;
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        playerDirectionX = 0;
-                        playerDirectionY = playerSpeed;
-                        break;
-
-                    case ConsoleKey.LeftArrow:
-                        playerDirectionX = -playerSpeed;
-                        playerDirectionY = 0;
-                        break;
-
-                    case ConsoleKey.RightArrow:
-                        playerDirectionX = playerSpeed;
-                        playerDirectionY = 0;
-                        break;
-
-                    case ConsoleKey.Spacebar:
-                        CreateBarrier(ref map, playerPositionX, playerPositionY, barrierIcon);
-                        break;
-
-                    case ConsoleKey.Escape:
-                        work = Exit();
-                        break;
+                    CreateBarrier(ref map, playerPositionY, playerPositionX, barrierIcon);
                 }
+                else if (charKey.Key == ConsoleKey.Escape)
+                {
+                    work = false;
+                }
+                else
+                {
+                    ChangeDirection(charKey, ref playerDirectionX, ref playerDirectionY, playerSpeed);
 
-                GetDirections(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
+                    GetNextPosition(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
 
-                if (TryCollision(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
-                    Move(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY, playerIcon);
+                    if (TryCollision(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
+                        Move(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY);
+                }
 
                 Console.Clear();
             }
         }
 
-        static bool Exit()
+        static void ChangeDirection(ConsoleKeyInfo key, ref int directionX, ref int directionY, int speed)
         {
-            return false;
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    directionX = 0;
+                    directionY = -speed;
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    directionX = 0;
+                    directionY = speed;
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    directionX = -speed;
+                    directionY = 0;
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    directionX = speed;
+                    directionY = 0;
+                    break;
+
+                default:
+                    return;
+            }
         }
 
         static void CreateBarrier(ref char[,] map, int positionX, int positionY, char barrierIcon)
@@ -114,13 +119,13 @@ namespace BraveNewWorld
             }
         }
 
-        static void GetDirections(int positionX, int positionY, ref int directionX, ref int directionY)
+        static void GetNextPosition(int positionX, int positionY, ref int directionX, ref int directionY)
         {
             directionX += positionX;
             directionY += positionY;
         }
 
-        static void Move(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY, char playerIcon)
+        static void Move(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY)
         {
             playerPositionX = playerDirectionX;
             playerPositionY = playerDirectionY;
