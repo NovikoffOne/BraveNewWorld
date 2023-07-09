@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Media;
+using System.Net.Mime;
 
 namespace BraveNewWorld
 {
@@ -9,90 +9,96 @@ namespace BraveNewWorld
         {
             bool work = true;
             char playerIcon = '@';
+            char barrierIcon = '#';
 
-            int userX = 2;
-            int userY = 2;
+            int playerSpeed = 1;
+            int playerPositionX = 1;
+            int playerPositionY = 1;
+            int playerDirectionX = 0;
+            int playerDirectionY = 0;
+
 
             char[,] map =
             {
-                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
-                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
-            };
+                {barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon,barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', barrierIcon },
+                {barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon,
+                    barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon, barrierIcon },
+                            };
 
             Console.CursorVisible = false;
 
             while (work)
             {
                 DrawMap(map);
-
-                PlayrInstall(userX, userY, playerIcon);
+                DrawPlayer(playerPositionX, playerPositionY, playerIcon);
 
                 ConsoleKeyInfo charKey = Console.ReadKey();
 
                 switch (charKey.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        if (map[userX - 1, userY] != '#')
-                        {
-                            userX--;
-                        }
+                        playerDirectionX = 0;
+                        playerDirectionY = -playerSpeed;
                         break;
-                    
+
                     case ConsoleKey.DownArrow:
-                        if (map[userX + 1, userY] != '#')
-                        {
-                            userX++;
-                        }
+                        playerDirectionX = 0;
+                        playerDirectionY = playerSpeed;
                         break;
-                    
+
                     case ConsoleKey.LeftArrow:
-                        if (map[userX, userY - 1] != '#')
-                        {
-                            userY--;
-                        }
+                        playerDirectionX = -playerSpeed;
+                        playerDirectionY = 0;
                         break;
-                    
+
                     case ConsoleKey.RightArrow:
-                        if (map[userX, userY + 1] != '#')
-                        {
-                            userY++;
-                        }
+                        playerDirectionX = playerSpeed;
+                        playerDirectionY = 0;
                         break;
 
                     case ConsoleKey.Spacebar:
-                        map[userX, userY] = '#';
+                        CreateBarrier(ref map, playerPositionX, playerPositionY, barrierIcon);
                         break;
 
                     case ConsoleKey.Escape:
-                        work = false;
+                        work = Exit();
                         break;
                 }
 
+                GetDirections(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
+
+                if (TryCollision(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
+                    Move(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY, playerIcon);
+
                 Console.Clear();
             }
+        }
+
+        static bool Exit()
+        {
+            return false;
+        }
+
+        static void CreateBarrier(ref char[,] map, int positionX, int positionY, char barrierIcon)
+        {
+            map[positionX, positionY] = barrierIcon;
         }
 
         static void DrawMap(char[,] map)
@@ -108,10 +114,30 @@ namespace BraveNewWorld
             }
         }
 
-        static void PlayrInstall(int positionX, int positionY, char icon)
+        static void GetDirections(int positionX, int positionY, ref int directionX, ref int directionY)
         {
-            Console.SetCursorPosition(positionY, positionX);
-            Console.Write(icon);
+            directionX += positionX;
+            directionY += positionY;
+        }
+
+        static void Move(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY, char playerIcon)
+        {
+            playerPositionX = playerDirectionX;
+            playerPositionY = playerDirectionY;
+        }
+
+        static void DrawPlayer(int playerPositionX, int playerPositionY, char playerIcon)
+        {
+            Console.SetCursorPosition(playerPositionX, playerPositionY);
+            Console.Write(playerIcon);
+        }
+
+        static bool TryCollision(char[,] map, int directionX, int directionY, char barrierIcon)
+        {
+            if (map[directionY, directionX] != barrierIcon)
+                return false;
+            else
+                return true;
         }
     }
 }
