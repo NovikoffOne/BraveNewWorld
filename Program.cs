@@ -70,6 +70,9 @@ namespace BraveNewWorld
 
         static void ChangeDirection(ConsoleKeyInfo key, ref int directionX, ref int directionY, int speed)
         {
+            directionX = 0;
+            directionY = 0;
+
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
@@ -96,15 +99,16 @@ namespace BraveNewWorld
         static void Move(Char[,] map, ConsoleKeyInfo charKey, int playerSpeed, ref int playerPositionX,
             ref int playerPositionY,ref int playerDirectionX,ref int playerDirectionY, char barrierIcon)
         {
+            int nextPositionX;
+            int nextPositionY;
+
             ChangeDirection(charKey, ref playerDirectionX, ref playerDirectionY, playerSpeed);
 
-            GetNextPosition(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
+            nextPositionX = GetNextPosition(playerPositionX, playerDirectionX);
+            nextPositionY = GetNextPosition(playerPositionY, playerDirectionY);
 
-            if (CanMove(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
-                ChangePosition(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY);
-
-            playerDirectionX = 0;
-            playerDirectionY = 0;
+            if (CanMove(map, nextPositionX, nextPositionY, barrierIcon) == false)
+                ChangePosition(ref playerPositionX, ref playerPositionY, nextPositionX, nextPositionY);
         }
 
         static void CreateBarrier(ref char[,] map, int positionX, int positionY, char barrierIcon)
@@ -125,16 +129,15 @@ namespace BraveNewWorld
             }
         }
 
-        static void GetNextPosition(int positionX, int positionY, ref int directionX, ref int directionY)
+        static int GetNextPosition(int position, int direction)
         {
-            directionX += positionX;
-            directionY += positionY;
+            return position + direction;
         }
 
-        static void ChangePosition(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY)
+        static void ChangePosition(ref int playerPositionX, ref int playerPositionY, int nextPositionX, int nextPositionY)
         {
-            playerPositionX = playerDirectionX;
-            playerPositionY = playerDirectionY;
+            playerPositionX = nextPositionX;
+            playerPositionY = nextPositionY;
         }
 
         static void DrawPlayer(int playerPositionX, int playerPositionY, char playerIcon)
@@ -143,9 +146,9 @@ namespace BraveNewWorld
             Console.Write(playerIcon);
         }
 
-        static bool CanMove(char[,] map, int directionX, int directionY, char barrierIcon)
+        static bool CanMove(char[,] map, int positionX, int positionY, char barrierIcon)
         {
-            return map[directionX, directionY] == barrierIcon;
+            return map[positionX, positionY] == barrierIcon;
         }
     }
 }
