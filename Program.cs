@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace BraveNewWorld
 {
@@ -6,7 +7,7 @@ namespace BraveNewWorld
     {
         static void Main(string[] args)
         {
-            bool IsWork = true;
+            bool isWork = true;
             char playerIcon = '@';
             char barrierIcon = '#';
 
@@ -42,11 +43,8 @@ namespace BraveNewWorld
 
             Console.CursorVisible = false;
 
-            while (IsWork)
+            while (isWork)
             {
-                playerDirectionX = 0;
-                playerDirectionY = 0;
-
                 DrawMap(map);
                 DrawPlayer(playerPositionX, playerPositionY, playerIcon);
 
@@ -58,16 +56,12 @@ namespace BraveNewWorld
                 }
                 else if (charKey.Key == ConsoleKey.Escape)
                 {
-                    IsWork = false;
+                    isWork = false;
                 }
                 else
                 {
-                    ChangeDirection(charKey, ref playerDirectionX, ref playerDirectionY, playerSpeed);
-
-                    GetNextPosition(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
-
-                    if (CanMove(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
-                        Move(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY);
+                    Move(map, charKey, playerSpeed, ref playerPositionX, 
+                        ref playerPositionY, ref playerDirectionX, ref playerDirectionY, barrierIcon);
                 }
 
                 Console.Clear();
@@ -99,6 +93,20 @@ namespace BraveNewWorld
             }
         }
 
+        static void Move(Char[,] map, ConsoleKeyInfo charKey, int playerSpeed, ref int playerPositionX,
+            ref int playerPositionY,ref int playerDirectionX,ref int playerDirectionY, char barrierIcon)
+        {
+            ChangeDirection(charKey, ref playerDirectionX, ref playerDirectionY, playerSpeed);
+
+            GetNextPosition(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
+
+            if (CanMove(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
+                ChangePosition(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY);
+
+            playerDirectionX = 0;
+            playerDirectionY = 0;
+        }
+
         static void CreateBarrier(ref char[,] map, int positionX, int positionY, char barrierIcon)
         {
             map[positionX, positionY] = barrierIcon;
@@ -123,7 +131,7 @@ namespace BraveNewWorld
             directionY += positionY;
         }
 
-        static void Move(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY)
+        static void ChangePosition(ref int playerPositionX, ref int playerPositionY, int playerDirectionX, int playerDirectionY)
         {
             playerPositionX = playerDirectionX;
             playerPositionY = playerDirectionY;
@@ -137,7 +145,7 @@ namespace BraveNewWorld
 
         static bool CanMove(char[,] map, int directionX, int directionY, char barrierIcon)
         {
-            return map[directionY, directionX] == barrierIcon;
+            return map[directionX, directionY] == barrierIcon;
         }
     }
 }
