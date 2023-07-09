@@ -6,7 +6,7 @@ namespace BraveNewWorld
     {
         static void Main(string[] args)
         {
-            bool work = true;
+            bool IsWork = true;
             char playerIcon = '@';
             char barrierIcon = '#';
 
@@ -15,7 +15,6 @@ namespace BraveNewWorld
             int playerPositionY = 1;
             int playerDirectionX = 0;
             int playerDirectionY = 0;
-
 
             char[,] map =
             {
@@ -43,8 +42,11 @@ namespace BraveNewWorld
 
             Console.CursorVisible = false;
 
-            while (work)
+            while (IsWork)
             {
+                playerDirectionX = 0;
+                playerDirectionY = 0;
+
                 DrawMap(map);
                 DrawPlayer(playerPositionX, playerPositionY, playerIcon);
 
@@ -56,7 +58,7 @@ namespace BraveNewWorld
                 }
                 else if (charKey.Key == ConsoleKey.Escape)
                 {
-                    work = false;
+                    IsWork = false;
                 }
                 else
                 {
@@ -64,7 +66,7 @@ namespace BraveNewWorld
 
                     GetNextPosition(playerPositionX, playerPositionY, ref playerDirectionX, ref playerDirectionY);
 
-                    if (TryCollision(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
+                    if (CanMove(map, playerDirectionX, playerDirectionY, barrierIcon) == false)
                         Move(ref playerPositionX, ref playerPositionY, playerDirectionX, playerDirectionY);
                 }
 
@@ -77,23 +79,19 @@ namespace BraveNewWorld
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    directionX = 0;
                     directionY = -speed;
                     break;
 
                 case ConsoleKey.DownArrow:
-                    directionX = 0;
                     directionY = speed;
                     break;
 
                 case ConsoleKey.LeftArrow:
                     directionX = -speed;
-                    directionY = 0;
                     break;
 
                 case ConsoleKey.RightArrow:
                     directionX = speed;
-                    directionY = 0;
                     break;
 
                 default:
@@ -137,12 +135,9 @@ namespace BraveNewWorld
             Console.Write(playerIcon);
         }
 
-        static bool TryCollision(char[,] map, int directionX, int directionY, char barrierIcon)
+        static bool CanMove(char[,] map, int directionX, int directionY, char barrierIcon)
         {
-            if (map[directionY, directionX] != barrierIcon)
-                return false;
-            else
-                return true;
+            return map[directionY, directionX] == barrierIcon;
         }
     }
 }
