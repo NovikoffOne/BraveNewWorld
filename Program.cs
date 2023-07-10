@@ -107,7 +107,7 @@ namespace BraveNewWorld
             nextPositionX = GetNextPosition(playerPositionX, playerDirectionX);
             nextPositionY = GetNextPosition(playerPositionY, playerDirectionY);
 
-            if (CanMove(map, nextPositionX, nextPositionY, barrierIcon) == false)
+            if (CanMove(map, nextPositionX, nextPositionY, barrierIcon) == true)
                 ChangePosition(ref playerPositionX, ref playerPositionY, nextPositionX, nextPositionY);
         }
 
@@ -148,7 +148,7 @@ namespace BraveNewWorld
 
         static bool CanMove(char[,] map, int positionX, int positionY, char barrierIcon)
         {
-            return map[positionX, positionY] == barrierIcon;
+            return map[positionX, positionY] != barrierIcon;
         }
     }
 }
